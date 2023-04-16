@@ -1,4 +1,5 @@
 from enum import Enum
+import random
 
 
 class CellType(Enum):
@@ -11,18 +12,17 @@ class Candy:
         self.cell = cell
         self.points = points
 
-    def on_eaten(self, game):
+    def on_eaten(self):
         self.cell.candy = None
-        game.add_score(self.points)
 
 
 class ExtraCandy(Candy):
     def __init__(self, cell, points=100):
         super().__init__(cell, points)
 
-    def on_eaten(self, game):
-        super().on_eaten(game)
-        game.turbo_state_on()
+    def on_eaten(self):
+        super().on_eaten()
+        # game.turbo_state_on()
 
 
 class Cell:
@@ -30,6 +30,11 @@ class Cell:
         self.maze = maze
         self.type = type
         self.candy = None
+        if self.type == CellType.PASS:
+            if random.randint(1, 10) == 1:
+                self.candy = ExtraCandy(self)
+            else:
+                self.candy = Candy(self)
 
 
 class Maze:

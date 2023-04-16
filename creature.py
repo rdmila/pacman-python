@@ -10,7 +10,8 @@ class Creature:
     def handle_collisions(self):
         pass
 
-    def __init__(self, maze, config):
+    def __init__(self, game, maze, config):
+        self.game = game
         self.maze = maze
         self.config = config
         self.x = None

@@ -4,8 +4,8 @@ import random
 
 
 class Ghost(Creature):
-    def __init__(self, maze, config, pacman):
-        super().__init__(maze, config)
+    def __init__(self, game, maze, config, pacman):
+        super().__init__(game, maze, config)
         self.x = config.ghost_position_left_up[0] + random.randint(0, 0)
         self.y = config.ghost_position_left_up[1] + random.randint(0, 0)
         self.x *= config.cell_width

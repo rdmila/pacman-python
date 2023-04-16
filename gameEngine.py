@@ -35,12 +35,18 @@ class Game:
         self.state = UsualState()
         self.config = GameConfig('config.json')
         self.score = 0
+        self.candy_cnt = 0
 
         self.maze = Maze(self.config)
+        for i in self.maze.maze:
+            for j in i:
+                if j.candy is not None:
+                    self.candy_cnt += 1
+
         self.ghosts = []
-        self.pacman = Pacman(self.maze, self.config)
+        self.pacman = Pacman(self, self.maze, self.config)
         for _ in range(self.config.ghosts_count):
-            self.ghosts.append(Ghost(self.maze, self.config, self.pacman))
+            self.ghosts.append(Ghost(self, self.maze, self.config, self.pacman))
         self.graphics = GraphicsManager(self.maze, self.pacman, self.ghosts, self.config)
         self.graphics.root.after(100, self.update_field)
         self.graphics.start()
@@ -50,4 +56,6 @@ class Game:
         for ghost in self.ghosts:
             ghost.run()
         self.graphics.draw()
+        if self.candy_cnt == 0:
+            self.graphics.win()
         self.graphics.root.after(100, self.update_field)

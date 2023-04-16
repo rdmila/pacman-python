@@ -36,9 +36,9 @@ class GraphicsManager:
                                             (j + 1) * cell_in_pixels, (i + 1) * cell_in_pixels,
                                             fill='blue', outline='blue')
                 elif cell.candy is not None:
-                    self.candy_sprites = self.canvas.create_oval(j * cell_in_pixels, i * cell_in_pixels,
-                                            (j + 1) * cell_in_pixels, (i + 1) * cell_in_pixels,
-                                            fill='purple', outline='purple')
+                    self.candy_sprites[i][j] = self.canvas.create_oval((j + 0.45) * cell_in_pixels, (i + 0.45) * cell_in_pixels,
+                                            (j + 0.55) * cell_in_pixels, (i + 0.55) * cell_in_pixels,
+                                            fill='pink', outline='pink')
 
         x = self.points_to_pixels(pacman.x)
         y = self.points_to_pixels(pacman.y)
@@ -69,3 +69,12 @@ class GraphicsManager:
             y = self.points_to_pixels(ghost.y)
             self.canvas.coords(self.ghost_sprites[num], x, y, x + sh, y + sh)
         self.canvas.pack()
+
+        for i in range(self.maze.height):
+            for j in range(self.maze.width):
+                if self.candy_sprites[i][j] is not None and self.maze.maze[i][j].candy is None:
+                    self.canvas.delete(self.candy_sprites[i][j])
+                    self.candy_sprites[i][j] = None
+
+    def win(self):
+        self.root.quit()
