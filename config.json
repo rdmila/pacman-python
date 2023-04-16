@@ -1,0 +1,11 @@
+  {
+  "maze": "maze.txt",
+  "ghosts_count" : 5,
+  "pacman_position" : [9, 18],
+  "ghost_position_left_up" : [5, 5],
+  "ghost_position_right_down" : [11, 8],
+  "pacman_speed" : 5,
+  "ghost_speed" : 5,
+  "cell_width" : 10,
+  "cell_in_pixels" : 30
+}
