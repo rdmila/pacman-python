@@ -5,6 +5,7 @@ from ghost import Ghost
 from maze import Maze
 from graphics import GraphicsManager
 
+
 class State:
     def handle_collision(self, game, ghost):
         pass
@@ -59,3 +60,6 @@ class Game:
         if self.candy_cnt == 0:
             self.graphics.win()
         self.graphics.root.after(100, self.update_field)
+
+    def over(self):
+        self.graphics.lose()

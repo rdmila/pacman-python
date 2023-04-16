@@ -1,5 +1,6 @@
 import tkinter as tk
 from maze import CellType
+import time
 
 class GraphicsManager:
     def points_to_pixels(self, x):
@@ -77,4 +78,11 @@ class GraphicsManager:
                     self.candy_sprites[i][j] = None
 
     def win(self):
+        self.canvas.create_rectangle(0, 0, self.canvas_width, self.canvas_height, fill='green')
+        time.sleep(1)
+        self.root.quit()
+
+    def lose(self):
+        self.canvas.create_rectangle(0, 0, self.canvas_width, self.canvas_height, fill='red')
+        time.sleep(1)
         self.root.quit()
