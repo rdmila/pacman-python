@@ -32,8 +32,8 @@ class GameConfig:
 
 class Game:
     def __init__(self):
-        self.timeManager = TimeManager()
         self.state = UsualState()
+        self.finish = False
         self.config = GameConfig('config.json')
         self.score = 0
         self.candy_cnt = 0
@@ -51,15 +51,23 @@ class Game:
         self.graphics = GraphicsManager(self.maze, self.pacman, self.ghosts, self.config)
         self.graphics.root.after(100, self.update_field)
         self.graphics.start()
+        self.after = None
 
     def update_field(self):
+        if self.finish:
+            return
+        self.graphics.draw()
         self.pacman.run()
         for ghost in self.ghosts:
             ghost.run()
-        self.graphics.draw()
         if self.candy_cnt == 0:
-            self.graphics.win()
-        self.graphics.root.after(100, self.update_field)
+            self.over(True)
+        self.after = self.graphics.root.after(100, self.update_field)
 
-    def over(self):
-        self.graphics.lose()
+    def over(self, win):
+        self.finish = True
+        self.graphics.root.after_cancel(self.after)
+        if win:
+            self.graphics.win()
+        else:
+            self.graphics.lose()

@@ -28,4 +28,4 @@ class Ghost(Creature):
 
     def handle_collisions(self):
         if self.pacman.x - self.x <= 1 and self.pacman.y - self.y <= 1:
-            self.game.over()
+            self.game.over(False)

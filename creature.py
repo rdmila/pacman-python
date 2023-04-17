@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class Creature:
     class Direction(Enum):
         R = 0

@@ -22,13 +22,12 @@ class ExtraCandy(Candy):
 
     def on_eaten(self):
         super().on_eaten()
-        # game.turbo_state_on()
 
 
 class Cell:
-    def __init__(self, maze, type):
+    def __init__(self, maze, type_):
         self.maze = maze
-        self.type = type
+        self.type = type_
         self.candy = None
         if self.type == CellType.PASS:
             if random.randint(1, 10) == 1:
@@ -47,7 +46,6 @@ class Maze:
                 self.maze.append([Cell(self, CellType.WALL if i == '1' else CellType.PASS) for i in line])
         self.width = len(self.maze[0])
         self.height = len(self.maze)
-
 
     def get_cell(self, x, y):
         return self.maze[int(y / self.cell_width)][int(x / self.cell_width)]

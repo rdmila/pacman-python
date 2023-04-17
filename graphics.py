@@ -2,6 +2,7 @@ import tkinter as tk
 from maze import CellType
 import time
 
+
 class GraphicsManager:
     def points_to_pixels(self, x):
         return x * self.config.cell_in_pixels / self.config.cell_width
@@ -34,12 +35,14 @@ class GraphicsManager:
             for j, cell in enumerate(row):
                 if cell.type == CellType.WALL:
                     self.canvas.create_rectangle(j * cell_in_pixels, i * cell_in_pixels,
-                                            (j + 1) * cell_in_pixels, (i + 1) * cell_in_pixels,
-                                            fill='blue', outline='blue')
+                                                 (j + 1) * cell_in_pixels, (i + 1) * cell_in_pixels,
+                                                 fill='blue', outline='blue')
                 elif cell.candy is not None:
-                    self.candy_sprites[i][j] = self.canvas.create_oval((j + 0.45) * cell_in_pixels, (i + 0.45) * cell_in_pixels,
-                                            (j + 0.55) * cell_in_pixels, (i + 0.55) * cell_in_pixels,
-                                            fill='pink', outline='pink')
+                    self.candy_sprites[i][j] = self.canvas.create_oval((j + 0.45) * cell_in_pixels,
+                                                                       (i + 0.45) * cell_in_pixels,
+                                                                       (j + 0.55) * cell_in_pixels,
+                                                                       (i + 0.55) * cell_in_pixels,
+                                                                       fill='pink', outline='pink')
 
         x = self.points_to_pixels(pacman.x)
         y = self.points_to_pixels(pacman.y)
@@ -78,11 +81,10 @@ class GraphicsManager:
                     self.candy_sprites[i][j] = None
 
     def win(self):
-        self.canvas.create_rectangle(0, 0, self.canvas_width, self.canvas_height, fill='green')
-        time.sleep(1)
-        self.root.quit()
+        self.root.destroy()
 
     def lose(self):
-        self.canvas.create_rectangle(0, 0, self.canvas_width, self.canvas_height, fill='red')
+        self.canvas.create_rectangle(0, 0, self.canvas_width, self.canvas_height, fill="red", outline="red")
+        self.canvas.pack()
         time.sleep(1)
-        self.root.quit()
+        self.root.destroy()

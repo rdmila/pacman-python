@@ -12,7 +12,8 @@ class Event:
 
 
 class TimeEvent(Event):
-    def __init__(self, delay):
+    def __init__(self, game, delay):
+        super().__init__()
         self.delay = delay
         self.time = -1
 
