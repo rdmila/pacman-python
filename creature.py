@@ -43,6 +43,7 @@ class Creature:
         return [dx, dy]
 
     def run(self, continue_old_dir=False):
+        """Returns True on collision with desired object"""
         run_dir = self.old_dir if continue_old_dir else self.direction
         dx, dy = self.get_shift(run_dir)
 
@@ -59,4 +60,4 @@ class Creature:
             if not continue_old_dir:
                 self.run(True)
 
-        self.handle_collisions()
+        return self.handle_collisions()

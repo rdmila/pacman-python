@@ -25,7 +25,8 @@ class Game:
         if self.finish:
             return
         self.graphics.update()
-        self.pacman.run()
+        if self.pacman.run():
+            self.maze.candy_cnt -= 1
         for ghost in self.ghosts:
             ghost.run()
         if self.maze.candy_cnt == 0:
