@@ -8,6 +8,8 @@ class CellType(Enum):
 
 
 class Candy:
+    """"Usual candy"""
+
     def __init__(self, cell, points=5):
         self.cell = cell
         self.points = points
@@ -17,6 +19,8 @@ class Candy:
 
 
 class ExtraCandy(Candy):
+    """Expensive candy"""
+
     def __init__(self, cell, points=100):
         super().__init__(cell, points)
 
@@ -25,8 +29,7 @@ class ExtraCandy(Candy):
 
 
 class Cell:
-    def __init__(self, maze, type_):
-        self.maze = maze
+    def __init__(self, type_):
         self.type = type_
         self.candy = None
         if self.type == CellType.PASS:
@@ -38,17 +41,31 @@ class Cell:
 
 class Maze:
     def __init__(self, config):
-        self.maze = []
+        self.grid = []
         self.cell_width = config.cell_width
+        self.candy_cnt = 0
         with open(config.maze) as maze_file:
             for line in maze_file:
                 line = line[:-1]
-                self.maze.append([Cell(self, CellType.WALL if i == '1' else CellType.PASS) for i in line])
-        self.width = len(self.maze[0])
-        self.height = len(self.maze)
+                self.grid.append([Cell(CellType.WALL if i == '1' else CellType.PASS) for i in line])
+                for cell in self.grid[-1]:
+                    if cell.type == CellType.PASS:
+                        self.candy_cnt += 1
+        self.width = len(self.grid[0])
+        self.height = len(self.grid)
 
-    def get_cell(self, x, y):
-        return self.maze[int(y / self.cell_width)][int(x / self.cell_width)]
+    def get_cell(self, x: int, y: int) -> Cell:
+        """Returns the cell from maze by coordinates of a point.
+        Note: each cell contains (self.cell_width)x(self.cell_width) points."""
+        x_cell_id = x // self.cell_width
+        y_cell_id = y // self.cell_width
+        return self.grid[y_cell_id][x_cell_id]
 
-    def pos_is_legal(self, x, y):
-        return self.get_cell(x, y).type == CellType.PASS
+    def pos_is_legal(self, x: int, y: int) -> bool:
+        """Given coords of a center of a creature, checks if a creature can stand at point.
+        It is assumed that any creature's diameter equals the width of a passage."""
+        cell_type = self.get_cell(x, y).type
+        cell_center = (self.cell_width // 2)
+        is_centered_by_x = x % self.cell_width == cell_center
+        is_centered_by_y = y % self.cell_width == cell_center
+        return cell_type == CellType.PASS and (is_centered_by_x or is_centered_by_y)
