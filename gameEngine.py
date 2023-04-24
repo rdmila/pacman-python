@@ -34,7 +34,5 @@ class Game:
 
     def over(self, win):
         self.finish = True
-        if win:
-            self.graphics.win()
-        else:
-            self.graphics.lose()
+        func = self.graphics.win if win else self.graphics.lose
+        self.graphics.root.after(10, func)

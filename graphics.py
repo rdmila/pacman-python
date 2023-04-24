@@ -72,6 +72,7 @@ class GraphicsManager:
         self.draw_creatures()
 
         self.canvas.pack()
+        self.root.update()
 
     def start(self):
         self.root.mainloop()
@@ -98,9 +99,8 @@ class GraphicsManager:
         self.root.destroy()
 
     def lose(self):
-        """Draws picture saying that player lost the game."""
+        """Draws picture saying that player lost the game, waits one second and finishes."""
         self.canvas.create_rectangle(0, 0, self.canvas_width, self.canvas_height, fill="red", outline="red")
         self.canvas.pack()
-        self.graphics.root.after_cancel(self.after)
-        time.sleep(0.01)
-        self.root.destroy()
+        self.root.update()
+        self.root.after(1000, self.root.destroy)
