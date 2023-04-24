@@ -1,4 +1,3 @@
-import json
 from pacman import Pacman
 from ghost import Ghost
 from maze import Maze
@@ -39,6 +38,3 @@ class Game:
             self.graphics.win()
         else:
             self.graphics.lose()
-
-
-game = Game()
