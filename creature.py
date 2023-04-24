@@ -20,31 +20,43 @@ class Creature:
         self.speed = None
         self.sprite = None
         self.direction = self.Direction.R
+        self.old_dir = self.direction
+        self.radius = self.config.cell_width // 2
 
-    def place(self, x, y):
-        self.x = x
-        self.y = y
+    def set_place_and_direction(self, x, y):
+        sh = self.config.cell_width // 2
+        self.x = x * self.config.cell_width + sh
+        self.y = y * self.config.cell_width + sh
         self.direction = self.Direction['R']
 
-    def run(self):
-        old_pos = [self.x, self.y]
-        match self.direction:
+    def get_shift(self, run_dir):
+        dx, dy = 0, 0
+        match run_dir:
             case self.Direction.R:
-                self.x += self.speed
+                dx = 1
             case self.Direction.D:
-                self.y += self.speed
+                dy = 1
             case self.Direction.L:
-                self.x -= self.speed
+                dx = -1
             case self.Direction.U:
-                self.y -= self.speed
-        if self.y < 0:
-            self.y += self.config.cell_in_pixels * self.maze.height
-        if self.x < 0:
-            self.x += self.config.cell_in_pixels * self.maze.width
+                dy = -1
+        return [dx, dy]
 
-        self.y %= self.config.cell_in_pixels * self.maze.height
-        self.x %= self.config.cell_in_pixels * self.maze.width
+    def run(self, continue_old_dir=False):
+        run_dir = self.old_dir if continue_old_dir else self.direction
+        dx, dy = self.get_shift(run_dir)
 
-        if not self.maze.pos_is_legal(self.x, self.y):
-            self.x, self.y = old_pos
+        border_x = self.x + dx * (self.speed + self.radius)
+        border_y = self.y + dy * (self.speed + self.radius)
+
+        if self.maze.pos_is_legal(border_x, border_y):
+            new_x = self.x + dx * self.speed
+            new_y = self.y + dy * self.speed
+            self.x, self.y = new_x, new_y
+            if not continue_old_dir:
+                self.old_dir = self.direction
+        else:
+            if not continue_old_dir:
+                self.run(True)
+
         self.handle_collisions()
