@@ -3,7 +3,7 @@ Written in Python using Tkinter
 
 ## How to run
 
-*Note:** You may need to install specific Python package
+**Note:** You may need to install specific Python package
 ```shell
 sudo apt-get install python3-tk
 ```
